@@ -1,0 +1,49 @@
+<project name="Sample.Project" default="runtests" basedir=".">
+    <property name="app.name"   value="sample" />
+    <property name="build.dir"  value="build/classes" />
+
+    <target name="JUNIT">
+        <available property="junit.present" classname="junit.framework.TestCase" />
+    </target>
+
+  <target name="runtests2" depends="JUNIT" if="junit.present">
+      <java fork="yes" classname="junit.textui.TestRunner" 
+          taskname="junit" failonerror="true">
+          <arg value="AllTests"/>
+          <classpath>
+              <pathelement path="plugins" />
+              <pathelement path="" />
+              <pathelement path="${java.class.path}" />
+          </classpath>
+      </java>
+    </target>
+  	
+  <target name="runtests3" depends="JUNIT" if="junit.present">
+	<junit>
+	  <test name="GrainAreaTest"/>
+	</junit>
+    </target>
+
+    <target name="runtests" depends="JUNIT" if="junit.present">
+    	<junit printsummary="yes" haltonfailure="yes">
+    	  <classpath>
+          <pathelement location="plugins" />
+          <pathelement path="" />
+          <pathelement path="${java.class.path}" />
+    	  </classpath>
+
+    	  <formatter type="plain"/>
+
+    	  <test name="AllTests" haltonfailure="no" outfile="result">
+    	    <formatter type="xml"/>
+    	  </test>
+
+    	  <batchtest fork="yes" todir="${reports.tests}">
+    	    <fileset dir="${src.tests}">
+    	      <include name="**/*Test*.java"/>
+    	      <exclude name="**/AllTests.java"/>
+    	    </fileset>
+    	  </batchtest>
+    	</junit>
+    </target>
+</project>

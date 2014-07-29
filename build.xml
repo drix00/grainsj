@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>  
+<project name="GrainsJ_" basedir="." default="jar">
+
+  <property name="src.dir"     value="src"/>
+  <property name="build.dir"   value="build"/>
+  <property name="classes.dir" value="${build.dir}/classes"/>
+  <property name="jar.dir"     value="."/>
+
+  <!-- Target to create the build directories prior to the -->
+  <!-- compile target. -->
+  <target name="prepare">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+  </target>
+
+  <target name="clean" description="Delete all generated files"> 
+    <delete file="${jar.dir}/GrainsJ_.jar"/>
+    <delete dir="${build.dir}"/>
+  </target> 
+
+    <target name="compile" depends="prepare" description="Compiles the Task"> 
+        <javac srcdir="${src.dir}" destdir="${classes.dir}">
+          <exclude name="*Test.java"/>
+          <classpath>
+            <pathelement location="lib/"/>
+            <fileset dir="lib">
+              <include name="**/*.jar"/>
+            </fileset>
+            <pathelement path="${java.class.path}/"/>
+            <pathelement path="${additional.path}"/>
+            <fileset dir="/usr/share/junit/">
+              <include name="junit.jar"/>
+            </fileset>
+           </classpath>
+        </javac>
+    </target> 
+
+    <target name="jar" depends="compile" description="JARs the Task"> 
+        <jar destfile="${jar.dir}/GrainsJ_.jar" basedir="${classes.dir}">
+          <fileset id="sources1" dir="${src.dir}"
+                   includes="**/*.java, plugins.config"
+                   excludes="**/*Test.java">
+          </fileset>
+          <fileset id="sources2" dir="${classes.dir}"
+                   includes="**/*.class"
+                   excludes="**/*Test.class">
+          </fileset>
+        </jar> 
+    </target> 
+
+</project> 
